@@ -33,8 +33,13 @@ public class Player : MonoBehaviour
     public float maxFallSpeed = 18f;
     public float fallSpeedMultiplier = 2f;
 
+
     private GameObject currentPlatform;
     [SerializeField] private BoxCollider2D playerCollider;
+    private float lastSPressTime = -1f;
+    private float doubleSPressThreshold = 0.3f;
+
+
     // [Header("WallCheck")]
     // public Transform wallCheckPos;
     // public Vector2 wallCheckSize = new Vector2(0.5f, 0.05f);
@@ -92,7 +97,15 @@ public class Player : MonoBehaviour
         // One way platform drop down
         if (Input.GetKeyDown(KeyCode.S) && currentPlatform != null)
         {
-            StartCoroutine(DisableCollision());
+            if (Time.time - lastSPressTime < doubleSPressThreshold)
+            {
+                StartCoroutine(DisableCollision());
+                lastSPressTime = -1f; // reseta para evitar múltiplos triggers
+            }
+            else
+            {
+                lastSPressTime = Time.time;
+            }
         }
 
 
