@@ -562,7 +562,19 @@ MonoBehaviour:
     m_ActionId: f2e830dc-4c05-4e4e-bab6-b88287fd8d30
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1656254860}
+        m_TargetAssemblyTypeName: Shoot, Assembly-CSharp
+        m_MethodName: Fire
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 9d07d003-1723-41b5-9144-1dc7370cdb6f
     m_ActionName: 'Player/Fire[/Mouse/leftButton]'
   - m_PersistentCalls:
@@ -630,6 +642,17 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1656254860 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 504120353413949584, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+  m_PrefabInstance: {fileID: 5801907409747696835}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656254853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd35a334b4a4f4c9bd05aeef188cf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5801907409747696835
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -642,6 +665,14 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 2.68
       objectReference: {fileID: 0}
+    - target: {fileID: 504120353413949584, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 7950965578944411799, guid: 873a67d99281cf0418eac08e90bc93e8, type: 3}
+    - target: {fileID: 504120353413949584, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+      propertyPath: shootAction.m_Name
+      value: Shoot
+      objectReference: {fileID: 0}
     - target: {fileID: 3780607074758427569, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
       propertyPath: jumpPower
       value: 20
@@ -653,6 +684,10 @@ PrefabInstance:
     - target: {fileID: 3780607074758427569, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
       propertyPath: groundLayer.m_Bits
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 5338968261910967839, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.04
       objectReference: {fileID: 0}
     - target: {fileID: 5919194594063432119, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

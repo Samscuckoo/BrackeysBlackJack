@@ -232,14 +232,19 @@ public class Player : MonoBehaviour
 
     private void Flip()
     {
-        if (isFacingRight && horizontalMovement < 0 || !isFacingRight && horizontalMovement > 0)
+        if ((isFacingRight && horizontalMovement < 0) || (!isFacingRight && horizontalMovement > 0))
         {
             isFacingRight = !isFacingRight;
-            Vector3 ls = transform.localScale;
-            ls.x *= -1f;
-            transform.localScale = ls;
+
+           
+            float yRotation = isFacingRight ? 0f : 180f;
+
+         
+            transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
     }
+
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;
