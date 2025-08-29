@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 123607089055573022}
   - component: {fileID: 3780607074758427569}
   - component: {fileID: 504120353413949584}
+  - component: {fileID: 5956194561490032219}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -270,3 +271,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 5338968261910967839}
   bulletPrefab: {fileID: 0}
+  bulletForce: 20
+  fireRate: 0.5
+  lifeTime: 2
+  bulletDamage: 10
+--- !u!114 &5956194561490032219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064727176833596120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb0cfe3778ffefa468b46b4b10be1e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damagePercent: 0
+  knockbackMultiplier: 0.1

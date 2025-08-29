@@ -4,8 +4,8 @@ public class Bullet : MonoBehaviour
 {
     [Header("Settings")]
     public float speed = 5f;
-    [HideInInspector] public int damage;     
-    [HideInInspector] public float lifeTime; 
+    [HideInInspector] public int damage;
+    [HideInInspector] public float lifeTime;
     [HideInInspector] public GameObject owner;
 
     public float baseKnockback = 5f; // força mínima
@@ -28,9 +28,11 @@ public class Bullet : MonoBehaviour
         PlayerDamage player = collision.GetComponent<PlayerDamage>();
         if (player != null)
         {
-            // direção da colisão = da bala
-            Vector2 hitDir = transform.right;
-            player.TakeHit(damage, hitDir, baseKnockback);
+              Vector2 dir = GetComponent<Rigidbody2D>()?.linearVelocity ?? 
+                          (collision.transform.position - transform.position);
+            if (dir == Vector2.zero) dir = Vector2.right; // fallback
+
+            player.TakeHit(damage, dir, baseKnockback);
         }
 
         Destroy(gameObject);

@@ -10,16 +10,19 @@ public class Shoot : MonoBehaviour
     public Transform firePoint;
     public GameObject bulletPrefab;
 
+    //Enum com os fire modes
+    public enum FireMode { Single, TripleShot }
+
     [Header("Shooting Settings")]
     public float bulletForce = 20f;
     public float fireRate = 0.5f;
     public float lifeTime = 2f;
     public int bulletDamage = 10;
+    public FireMode currentFireMode = FireMode.TripleShot;
 
     private float nextFireTime = 0f;
 
-    private enum FireMode { Single, TripleShot }
-    private FireMode currentFireMode = FireMode.TripleShot;
+
 
     public void Fire()
     {
