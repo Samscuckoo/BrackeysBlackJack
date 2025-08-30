@@ -13,12 +13,12 @@ public class PlayerDamage : MonoBehaviour
 =======
     [Header("Smash-like")]
     public float damagePercent = 0f;
-    public float knockbackMultiplier = 0.1f; 
-    public float baseHitstun = 0.20f;        
-    public float iFrameDuration = 0.75f;    
-    public float minHoriz = 0.6f;            
-    public float maxVert = 0.5f;            
-    public float knockbackDrag = 8f;        
+    public float knockbackMultiplier = 0.1f;
+    public float baseHitstun = 0.20f;
+    public float iFrameDuration = 0.75f;
+    public float minHoriz = 0.6f;
+    public float maxVert = 0.5f;
+    public float knockbackDrag = 8f;
 
     [Header("Opcional[material de atrito baixo]")]
     public PhysicsMaterial2D zeroFrictionMaterial;
@@ -52,6 +52,7 @@ public class PlayerDamage : MonoBehaviour
 
     public void TakeHit(int damage, Vector2 hitDirection, float baseForce)
     {
+        Debug.Log($"{name} took hit: {damage} damage, dir {hitDirection}, baseForce {baseForce}");
         if (isInvincible) return;
 
         damagePercent += damage;
@@ -60,12 +61,10 @@ public class PlayerDamage : MonoBehaviour
 
         Vector2 dir = hitDirection.normalized;
 
-        float signX = Mathf.Approximately(dir.x, 0f) ? 1f : Mathf.Sign(dir.x);
-        dir.x = Mathf.Clamp(Mathf.Abs(dir.x), minHoriz, 1f) * signX;
+        float signX = Mathf.Sign(hitDirection.x != 0 ? hitDirection.x : 1f);
+        dir.x = Mathf.Sign(hitDirection.x != 0 ? hitDirection.x : 1f) * Mathf.Max(Mathf.Abs(hitDirection.x), minHoriz);
+        dir.y = Mathf.Clamp(dir.y, minHoriz, maxVert);
 
-        dir.y = Mathf.Clamp(dir.y, -maxVert, maxVert);
-
-      
         StartCoroutine(ApplyHit(dir, force));
         StartCoroutine(InvincibilityFrames());
 
@@ -81,14 +80,12 @@ public class PlayerDamage : MonoBehaviour
         rb.linearDamping = knockbackDrag;
 
         if (col && zeroFrictionMaterial) col.sharedMaterial = zeroFrictionMaterial;
-        
+
         rb.AddForce(dir * force, ForceMode2D.Impulse);
 
-       
         float duration = baseHitstun + Mathf.Clamp(force * 0.01f, 0f, 0.35f);
         yield return new WaitForSeconds(duration);
 
-        
         rb.linearDamping = defaultDrag;
         if (col) col.sharedMaterial = defaultMaterial;
         InHitstun = false;
@@ -98,7 +95,7 @@ public class PlayerDamage : MonoBehaviour
     {
         isInvincible = true;
 
-    
+
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         float t = 0f;
         while (t < iFrameDuration)

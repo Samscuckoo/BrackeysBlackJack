@@ -20,12 +20,46 @@ public class Shoot : MonoBehaviour
     public int bulletDamage = 10;
     public FireMode currentFireMode = FireMode.TripleShot;
 
+    [Header("Card System")]
+    public List<int> playerHand = new List<int>();
+    public float damagePerCard = 2f;
+    public float special21Multiplier = 2f;
+    public int maxCards = 10;
+    public float cardBonusDuration = 5f;
+    private bool canShoot = true;
+    private float cardBonusTimer = 0f;
+    private List<int> deck = new List<int>();
     private float nextFireTime = 0f;
 
 
+    void Start()
+    {
+        for (int i = 1; i <= 13; i++)
+        {
+            for (int j = 0; j < 4; j++)
+                deck.Add(i);
+        }
+        ShuffleDeck();
+    }
+
+
+    void Update()
+    {
+        if (cardBonusTimer > 0f)
+        {
+            cardBonusTimer -= Time.deltaTime;
+            if (cardBonusTimer <= 0f)
+            {
+                bulletDamage = 10;
+                playerHand.Clear();
+                canShoot = true;
+            }
+        }
+    }
 
     public void Fire()
     {
+        if (!canShoot) return;
         if (Time.time < nextFireTime) return;
         nextFireTime = Time.time + fireRate;
 
@@ -37,9 +71,7 @@ public class Shoot : MonoBehaviour
 
             case FireMode.TripleShot:
                 SpawnBullet(firePoint.position, firePoint.rotation);
-
                 SpawnBullet(firePoint.position, firePoint.rotation * Quaternion.Euler(0, 0, 30));
-
                 SpawnBullet(firePoint.position, firePoint.rotation * Quaternion.Euler(0, 0, 15));
                 break;
         }
@@ -75,6 +107,53 @@ public class Shoot : MonoBehaviour
             rb.linearVelocity = bullet.transform.right * bulletForce;
         }
 
+    }
+
+    void ShuffleDeck()
+    {
+        for (int i = 0; i < deck.Count; i++)
+        {
+            int rnd = Random.Range(0, deck.Count);
+            int temp = deck[i];
+            deck[i] = deck[rnd];
+            deck[rnd] = temp;
+        }
+    }
+
+    public void OnDrawCard(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            DrawCard();
+    }
+
+    private void DrawCard()
+    {
+        if (deck.Count == 0) return;
+
+        int card = deck[0];
+        deck.RemoveAt(0);
+        playerHand.Add(card);
+
+        int sum = 0;
+        foreach (int c in playerHand)
+            sum += Mathf.Min(c, 10);
+
+        if (sum > 21)
+        {
+            canShoot = false;
+            bulletDamage = 0;
+        }
+        else
+        {
+            canShoot = true;
+            bulletDamage = 10 + sum * (int)damagePerCard;
+            if (sum == 21)
+                bulletDamage = (int)(bulletDamage * special21Multiplier);
+
+            cardBonusTimer = cardBonusDuration;
+        }
+
+        Debug.Log($"Card drawn: {card}. Hand sum: {sum}. Bullet damage: {bulletDamage}");
     }
 
 }
