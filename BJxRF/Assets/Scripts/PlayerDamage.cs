@@ -9,12 +9,17 @@ public class PlayerDamage : MonoBehaviour
     public float knockbackMultiplier = 0.1f;
     public float baseHitstun = 0.20f;
     public float iFrameDuration = 0.75f;
+    public float horizontalKnockbackMultiplier = 2f;
+    public float verticalKnockbackMultiplier = 1f;
     public float minHoriz = 0.6f;
+    public float minVert = 0.1f;
     public float maxVert = 0.5f;
     public float knockbackDrag = 8f;
 
     [Header("Opcional[material de atrito baixo]")]
     public PhysicsMaterial2D zeroFrictionMaterial;
+
+    public Movement MovementCt;
 
     Rigidbody2D rb;
     Collider2D col;
@@ -37,21 +42,33 @@ public class PlayerDamage : MonoBehaviour
         Debug.Log($"{name} took hit: {damage} damage, dir {hitDirection}, baseForce {baseForce}");
         if (isInvincible) return;
 
+        MovementCt.cantMove = true;
         damagePercent += damage;
 
         float force = baseForce + (damagePercent * knockbackMultiplier);
 
         Vector2 dir = hitDirection.normalized;
 
-        float signX = Mathf.Sign(hitDirection.x != 0 ? hitDirection.x : 1f);
-        dir.x = Mathf.Sign(hitDirection.x != 0 ? hitDirection.x : 1f) * Mathf.Max(Mathf.Abs(hitDirection.x), minHoriz);
-        dir.y = Mathf.Clamp(dir.y, minHoriz, maxVert);
+        // Garante mínimo de horizontal
+        float horiz = Mathf.Clamp(dir.x, -1f, 1f);
+        if (Mathf.Abs(horiz) < minHoriz)
+            horiz = minHoriz * Mathf.Sign(dir.x != 0 ? dir.x : 1f);
+            horiz *= horizontalKnockbackMultiplier;
+
+        // Garante mínimo e máximo no vertical
+        float vert = Mathf.Clamp(dir.y, -maxVert, maxVert);
+        if (Mathf.Abs(vert) < minVert)
+            vert = minVert * Mathf.Sign(dir.y != 0 ? dir.y : 1f);
+            vert *= verticalKnockbackMultiplier;
+
+        dir = new Vector2(horiz, vert);
 
         StartCoroutine(ApplyHit(dir, force));
         StartCoroutine(InvincibilityFrames());
 
         Debug.Log($"{name}: {damagePercent}%");
     }
+
 
     IEnumerator ApplyHit(Vector2 dir, float force)
     {
@@ -71,6 +88,7 @@ public class PlayerDamage : MonoBehaviour
         rb.linearDamping = defaultDrag;
         if (col) col.sharedMaterial = defaultMaterial;
         InHitstun = false;
+        MovementCt.cantMove = false;
     }
 
     IEnumerator InvincibilityFrames()

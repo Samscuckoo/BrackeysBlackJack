@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
-public class Player : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     public Rigidbody2D rb;
     Animator animator;
     bool isFacingRight = true;
+    public bool cantMove = false;
 
     [Header("Movement")]
     public float moveSpeed = 5f;
@@ -36,8 +37,8 @@ public class Player : MonoBehaviour
 
     private GameObject currentPlatform;
     [SerializeField] private BoxCollider2D playerCollider;
-    private float lastSPressTime = -1f;
-    private float doubleSPressThreshold = 0.3f;
+    private float lastCrouchPressTime = -1f;
+    private float doubleCrouchPressThreshold = 0.3f;
 
 
     // [Header("WallCheck")]
@@ -94,19 +95,19 @@ public class Player : MonoBehaviour
             AudioManager.Instance.PlaySFX("Pulo");
         }
 
-        // One way platform drop down
-        if (Input.GetKeyDown(KeyCode.S) && currentPlatform != null)
-        {
-            if (Time.time - lastSPressTime < doubleSPressThreshold)
-            {
-                StartCoroutine(DisableCollision());
-                lastSPressTime = -1f; // reseta para evitar múltiplos triggers
-            }
-            else
-            {
-                lastSPressTime = Time.time;
-            }
-        }
+        // // One way platform drop down
+        // if (Input.GetKeyDown(KeyCode.S) && currentPlatform != null)
+        // {
+        //     if (Time.time - lastSPressTime < doubleSPressThreshold)
+        //     {
+        //         StartCoroutine(DisableCollision());
+        //         lastSPressTime = -1f; // reseta para evitar múltiplos triggers
+        //     }
+        //     else
+        //     {
+        //         lastSPressTime = Time.time;
+        //     }
+        // }
 
 
         // animator.SetFloat("xVelocity", Mathf.Abs(rb.linearVelocity.x));
@@ -118,8 +119,13 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
-        Flip();
+        if (!cantMove)
+        {
+            rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
+            Flip();
+        }
+
+
     }
 
 
@@ -236,10 +242,10 @@ public class Player : MonoBehaviour
         {
             isFacingRight = !isFacingRight;
 
-           
+
             float yRotation = isFacingRight ? 0f : 180f;
 
-         
+
             transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
     }
@@ -276,4 +282,21 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
     }
+
+    public void Crouch(InputAction.CallbackContext context)
+    {
+        if (context.started && currentPlatform != null)
+        {
+            if (Time.time - lastCrouchPressTime < doubleCrouchPressThreshold)
+            {
+                StartCoroutine(DisableCollision());
+                lastCrouchPressTime = -1f;
+            }
+            else
+            {
+                lastCrouchPressTime = Time.time;
+            }
+        }
+    }
+
 }
