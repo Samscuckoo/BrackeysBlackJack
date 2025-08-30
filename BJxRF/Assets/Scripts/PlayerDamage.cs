@@ -4,6 +4,13 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerDamage : MonoBehaviour
 {
+<<<<<<< HEAD
+    [Header("Smash Bros. Style")]
+    public float damagePercent = 0f;  // começa em 0%
+    public float knockbackMultiplier = 0.1f; // controla o quanto a % aumenta o empurrão
+    private Rigidbody2D rb;
+    private void Awake()
+=======
     [Header("Smash-like")]
     public float damagePercent = 0f;
     public float knockbackMultiplier = 0.1f;
@@ -30,12 +37,23 @@ public class PlayerDamage : MonoBehaviour
     public bool InHitstun { get; private set; }
 
     void Awake()
+>>>>>>> b3a321ef8a98b4c59f6c0691eebd93dddbeff92b
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         defaultDrag = rb.linearDamping;
         if (col) defaultMaterial = col.sharedMaterial;
     }
+<<<<<<< HEAD
+    // chamado quando leva um tiro/golpe
+    public void TakeHit(int damage, Vector2 hitDirection, float baseForce)
+    {
+        damagePercent += damage;
+        float knockbackForce = baseForce + (damagePercent * knockbackMultiplier);
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(hitDirection.normalized * knockbackForce, ForceMode2D.Impulse);
+        Debug.Log($"{gameObject.name} agora tem {damagePercent}% de dano!");
+=======
 
     public void TakeHit(int damage, Vector2 hitDirection, float baseForce)
     {
@@ -107,5 +125,14 @@ public class PlayerDamage : MonoBehaviour
         if (sr) sr.enabled = true;
 
         isInvincible = false;
+>>>>>>> b3a321ef8a98b4c59f6c0691eebd93dddbeff92b
+    }
+    // Novo método para curar (reduzir danoPercent)
+    public void Heal(float amount)
+    {
+        damagePercent -= amount;
+        if (damagePercent < 0f)
+            damagePercent = 0f;
+        Debug.Log($"{gameObject.name} curado! Dano atual: {damagePercent}%");
     }
 }

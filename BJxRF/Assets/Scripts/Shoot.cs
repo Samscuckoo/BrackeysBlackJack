@@ -76,7 +76,17 @@ public class Shoot : MonoBehaviour
                 break;
         }
     }
-
+ public void ActivateTripleShot(float duration)
+    {
+        StopAllCoroutines();
+        StartCoroutine(TripleShotRoutine(duration));
+    }
+    private IEnumerator TripleShotRoutine(float duration)
+    {
+        currentFireMode = FireMode.TripleShot;
+        yield return new WaitForSeconds(duration);
+        currentFireMode = FireMode.Single;
+    }
     private void SpawnBullet(Vector3 position, Quaternion rotation)
     {
         GameObject bullet = Instantiate(bulletPrefab, position, rotation);

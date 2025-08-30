@@ -56,9 +56,27 @@ public class Movement : MonoBehaviour
     // float wallJumpTimer;
     // public Vector2 wallJumpPower = new Vector2(5f, 10f);
 
+    private Coroutine speedBoostCoroutine;
+    private float baseMoveSpeed;
     void Start()
     {
         animator = GetComponent<Animator>();
+        baseMoveSpeed = moveSpeed; // guarda a velocidade base
+    }
+ 
+    public void ActivateSpeedBoost(float multiplier, float duration)
+    {
+        if (speedBoostCoroutine != null)
+            StopCoroutine(speedBoostCoroutine);
+        speedBoostCoroutine = StartCoroutine(SpeedBoostRoutine(multiplier, duration));
+    }
+    private IEnumerator SpeedBoostRoutine(float multiplier, float duration)
+    {
+        moveSpeed = baseMoveSpeed * multiplier;
+        Debug.Log($"Speed boost ativado! Velocidade atual: {moveSpeed}");
+        yield return new WaitForSeconds(duration);
+        moveSpeed = baseMoveSpeed;
+        Debug.Log($"Speed boost terminou. Velocidade restaurada: {moveSpeed}");
     }
 
     void Update()
