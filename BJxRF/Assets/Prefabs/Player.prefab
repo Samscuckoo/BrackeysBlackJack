@@ -94,8 +94,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.44, y: 0.44, z: 0.44}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8615421019541037885}
   - {fileID: 5338968261910967839}
@@ -256,7 +256,7 @@ MonoBehaviour:
   baseGravity: 2
   maxFallSpeed: 18
   fallSpeedMultiplier: 2
-  playerCollider: {fileID: 0}
+  playerCollider: {fileID: 123607089055573022}
 --- !u!114 &504120353413949584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,11 +270,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 5338968261910967839}
-  bulletPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 7950965578944411799, guid: 873a67d99281cf0418eac08e90bc93e8, type: 3}
   bulletForce: 20
   fireRate: 0.5
   lifeTime: 2
   bulletDamage: 10
+  currentFireMode: 0
+  playerHand: 
+  damagePerCard: 2
+  special21Multiplier: 2
+  maxCards: 10
+  cardBonusDuration: 5
 --- !u!114 &5956194561490032219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,3 +295,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagePercent: 0
   knockbackMultiplier: 0.1
+  baseHitstun: 0.2
+  iFrameDuration: 0.75
+  minHoriz: 0.6
+  maxVert: 0.5
+  knockbackDrag: 8
+  zeroFrictionMaterial: {fileID: 0}

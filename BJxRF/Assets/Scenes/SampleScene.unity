@@ -261,6 +261,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3780607074758427569, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+      propertyPath: playerCollider
+      value: 
+      objectReference: {fileID: 1701665654}
+    - target: {fileID: 3780607074758427569, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 6065994858451968429, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.2466674
@@ -308,7 +316,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9064727176833596120, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1701665650}
   m_SourcePrefab: {fileID: 100100000, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
 --- !u!1 &519420028
 GameObject:
@@ -694,6 +705,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: a0cc7249-dafc-4f15-907b-3a9e1653393a
     m_ActionName: 'Player/Crouch[/Keyboard/s]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1656254860}
+        m_TargetAssemblyTypeName: Shoot, Assembly-CSharp
+        m_MethodName: OnDrawCard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9a5b56e4-6dce-40c9-bfd3-080eab7cfa6f
+    m_ActionName: 'Player/Draw[/Keyboard/e]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -710,6 +737,136 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afd35a334b4a4f4c9bd05aeef188cf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1701665649 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9064727176833596120, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+  m_PrefabInstance: {fileID: 256101996}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1701665650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701665649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 00013b02db7707244821c5488c4c4748, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1701665653}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a74cab05-4ad4-4b46-b705-7447dfb8c79c
+    m_ActionName: 'Player2/Move[/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1701665652}
+        m_TargetAssemblyTypeName: Shoot, Assembly-CSharp
+        m_MethodName: Fire
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d00520dd-80fe-43f2-9bb0-cd5c925582c5
+    m_ActionName: 'Player2/Fire[/Keyboard/k]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1701665652}
+        m_TargetAssemblyTypeName: Shoot, Assembly-CSharp
+        m_MethodName: OnDrawCard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1222e5bd-3312-4299-a9f4-ee96dae40ec0
+    m_ActionName: 'Player2/Draw[/Keyboard/j]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1701665653}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 360b8475-dc19-4f60-aeb8-cdd72d86d276
+    m_ActionName: 'Player2/Jump[/Keyboard/upArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3466c4bc-fbf8-4064-b0fe-0f408d702c92
+    m_ActionName: 'Player2/Crouch[/Keyboard/downArrow]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player2
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1701665652 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 504120353413949584, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+  m_PrefabInstance: {fileID: 256101996}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701665649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afd35a334b4a4f4c9bd05aeef188cf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1701665653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3780607074758427569, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+  m_PrefabInstance: {fileID: 256101996}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701665649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8ff3aa08d6b58c43af36ceae37a5dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &1701665654 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 123607089055573022, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
+  m_PrefabInstance: {fileID: 256101996}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5801907409747696835
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -768,11 +925,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6065994858451968429, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.41
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6065994858451968429, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.49
+      value: 2.28
       objectReference: {fileID: 0}
     - target: {fileID: 6065994858451968429, guid: 2ab86757c8a779d4d94887bc1e490cde, type: 3}
       propertyPath: m_LocalPosition.z

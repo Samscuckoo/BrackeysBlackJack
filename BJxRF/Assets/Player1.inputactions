@@ -1,5 +1,5 @@
 {
-    "name": "BJxRF",
+    "name": "Player1",
     "maps": [
         {
             "name": "Player",
@@ -36,6 +36,15 @@
                     "name": "Crouch",
                     "type": "Button",
                     "id": "a0cc7249-dafc-4f15-907b-3a9e1653393a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Draw",
+                    "type": "Button",
+                    "id": "9a5b56e4-6dce-40c9-bfd3-080eab7cfa6f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -77,28 +86,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "31780ae0-fb32-4a17-9ad1-0d0d5bf4db5c",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "e4f477bc-2b14-4f6a-93d8-a38898d32d90",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "left",
                     "id": "53fccce1-c1c2-43ac-ba26-9ce8cc8c8b32",
                     "path": "<Keyboard>/a",
@@ -128,6 +115,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c7a1254d-1fe6-4a30-a8e9-7135128678fa",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Draw",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1d0a42e4-2a2d-4afd-9604-35d8f17d95d7",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Draw",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
