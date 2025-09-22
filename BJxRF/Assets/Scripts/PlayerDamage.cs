@@ -4,13 +4,6 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerDamage : MonoBehaviour
 {
-<<<<<<< HEAD
-    [Header("Smash Bros. Style")]
-    public float damagePercent = 0f;  // começa em 0%
-    public float knockbackMultiplier = 0.1f; // controla o quanto a % aumenta o empurrão
-    private Rigidbody2D rb;
-    private void Awake()
-=======
     [Header("Smash-like")]
     public float damagePercent = 0f;
     public float knockbackMultiplier = 0.1f;
@@ -37,23 +30,12 @@ public class PlayerDamage : MonoBehaviour
     public bool InHitstun { get; private set; }
 
     void Awake()
->>>>>>> b3a321ef8a98b4c59f6c0691eebd93dddbeff92b
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         defaultDrag = rb.linearDamping;
         if (col) defaultMaterial = col.sharedMaterial;
     }
-<<<<<<< HEAD
-    // chamado quando leva um tiro/golpe
-    public void TakeHit(int damage, Vector2 hitDirection, float baseForce)
-    {
-        damagePercent += damage;
-        float knockbackForce = baseForce + (damagePercent * knockbackMultiplier);
-        rb.linearVelocity = Vector2.zero;
-        rb.AddForce(hitDirection.normalized * knockbackForce, ForceMode2D.Impulse);
-        Debug.Log($"{gameObject.name} agora tem {damagePercent}% de dano!");
-=======
 
     public void TakeHit(int damage, Vector2 hitDirection, float baseForce)
     {
@@ -67,17 +49,19 @@ public class PlayerDamage : MonoBehaviour
 
         Vector2 dir = hitDirection.normalized;
 
+        StartCoroutine(TemporaryDisableCollider(0.45f));
+
         // Garante mínimo de horizontal
         float horiz = Mathf.Clamp(dir.x, -1f, 1f);
         if (Mathf.Abs(horiz) < minHoriz)
             horiz = minHoriz * Mathf.Sign(dir.x != 0 ? dir.x : 1f);
-            horiz *= horizontalKnockbackMultiplier;
+        horiz *= horizontalKnockbackMultiplier;
 
         // Garante mínimo e máximo no vertical
         float vert = Mathf.Clamp(dir.y, -maxVert, maxVert);
         if (Mathf.Abs(vert) < minVert)
             vert = minVert * Mathf.Sign(dir.y != 0 ? dir.y : 1f);
-            vert *= verticalKnockbackMultiplier;
+        vert *= verticalKnockbackMultiplier;
 
         dir = new Vector2(horiz, vert);
 
@@ -113,8 +97,12 @@ public class PlayerDamage : MonoBehaviour
     {
         isInvincible = true;
 
+        // Busca o SpriteRenderer no filho chamado "corpo"
+        SpriteRenderer sr = null;
+        Transform corpoTransform = transform.Find("Corpo");
+        if (corpoTransform != null)
+            sr = corpoTransform.GetComponent<SpriteRenderer>();
 
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
         float t = 0f;
         while (t < iFrameDuration)
         {
@@ -125,7 +113,6 @@ public class PlayerDamage : MonoBehaviour
         if (sr) sr.enabled = true;
 
         isInvincible = false;
->>>>>>> b3a321ef8a98b4c59f6c0691eebd93dddbeff92b
     }
     // Novo método para curar (reduzir danoPercent)
     public void Heal(float amount)
@@ -135,4 +122,13 @@ public class PlayerDamage : MonoBehaviour
             damagePercent = 0f;
         Debug.Log($"{gameObject.name} curado! Dano atual: {damagePercent}%");
     }
+
+    public IEnumerator TemporaryDisableCollider(float duration)
+    {
+        Collider2D col = GetComponent<Collider2D>();
+        col.enabled = false;                 // desativa colisão
+        yield return new WaitForSeconds(duration);
+        col.enabled = true;                  // reativa colisão
+    }
+
 }

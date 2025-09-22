@@ -31,6 +31,11 @@ public class Shoot : MonoBehaviour
     private List<int> deck = new List<int>();
     private float nextFireTime = 0f;
 
+    public int sum = 0; // <-- Torna sum público
+
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor = Color.white;
+    private Coroutine flashCoroutine;
 
     void Start()
     {
@@ -40,25 +45,35 @@ public class Shoot : MonoBehaviour
                 deck.Add(i);
         }
         ShuffleDeck();
+
+        // Corrigido: busca SpriteRenderer no filho "Corpo"
+        Transform corpoTransform = transform.Find("Corpo");
+        if (corpoTransform != null)
+            spriteRenderer = corpoTransform.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+            originalColor = spriteRenderer.color;
     }
 
 
     void Update()
     {
+        if (!GameManager.Instance.canPlayersMove) return;
         if (cardBonusTimer > 0f)
         {
             cardBonusTimer -= Time.deltaTime;
             if (cardBonusTimer <= 0f)
             {
                 bulletDamage = 10;
-                playerHand.Clear();
+                playerHand.Clear(); // Limpa a mão quando o tempo acaba
                 canShoot = true;
+                sum = 0;
             }
         }
     }
 
     public void Fire()
     {
+        if (!GameManager.Instance.canPlayersMove) return;
         if (!canShoot) return;
         if (Time.time < nextFireTime) return;
         nextFireTime = Time.time + fireRate;
@@ -76,7 +91,7 @@ public class Shoot : MonoBehaviour
                 break;
         }
     }
- public void ActivateTripleShot(float duration)
+    public void ActivateTripleShot(float duration)
     {
         StopAllCoroutines();
         StartCoroutine(TripleShotRoutine(duration));
@@ -122,19 +137,21 @@ public class Shoot : MonoBehaviour
 
     public void OnDrawCard(InputAction.CallbackContext context)
     {
+        if (!GameManager.Instance.canPlayersMove) return;
         if (context.started)
             DrawCard();
     }
 
     private void DrawCard()
     {
+        if (!canShoot) return; // Impede comprar cartas se estourado
         if (deck.Count == 0) return;
 
         int card = deck[0];
         deck.RemoveAt(0);
         playerHand.Add(card);
 
-        int sum = 0;
+        sum = 0;
         foreach (int c in playerHand)
             sum += Mathf.Min(c, 10);
 
@@ -142,6 +159,13 @@ public class Shoot : MonoBehaviour
         {
             canShoot = false;
             bulletDamage = 0;
+            if (spriteRenderer != null)
+            {
+                if (flashCoroutine != null)
+                    StopCoroutine(flashCoroutine);
+                flashCoroutine = StartCoroutine(FlashRed(cardBonusDuration));
+            }
+            playerHand.Clear();
         }
         else
         {
@@ -156,4 +180,18 @@ public class Shoot : MonoBehaviour
         Debug.Log($"Card drawn: {card}. Hand sum: {sum}. Bullet damage: {bulletDamage}");
     }
 
+    private IEnumerator FlashRed(float duration)
+    {
+        float timer = 0f;
+        while (timer < duration)
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.color = originalColor;
+            yield return new WaitForSeconds(0.1f);
+            timer += 0.2f;
+        }
+        sum = 0;
+        spriteRenderer.color = originalColor;
+    }
 }

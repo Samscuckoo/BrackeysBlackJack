@@ -34,12 +34,11 @@ public class Movement : MonoBehaviour
     public float maxFallSpeed = 18f;
     public float fallSpeedMultiplier = 2f;
 
-
     private GameObject currentPlatform;
     [SerializeField] private BoxCollider2D playerCollider;
     private float lastCrouchPressTime = -1f;
     private float doubleCrouchPressThreshold = 0.3f;
-
+    public GameObject corpo;
 
     // [Header("WallCheck")]
     // public Transform wallCheckPos;
@@ -56,27 +55,11 @@ public class Movement : MonoBehaviour
     // float wallJumpTimer;
     // public Vector2 wallJumpPower = new Vector2(5f, 10f);
 
-    private Coroutine speedBoostCoroutine;
     private float baseMoveSpeed;
     void Start()
     {
         animator = GetComponent<Animator>();
         baseMoveSpeed = moveSpeed; // guarda a velocidade base
-    }
- 
-    public void ActivateSpeedBoost(float multiplier, float duration)
-    {
-        if (speedBoostCoroutine != null)
-            StopCoroutine(speedBoostCoroutine);
-        speedBoostCoroutine = StartCoroutine(SpeedBoostRoutine(multiplier, duration));
-    }
-    private IEnumerator SpeedBoostRoutine(float multiplier, float duration)
-    {
-        moveSpeed = baseMoveSpeed * multiplier;
-        Debug.Log($"Speed boost ativado! Velocidade atual: {moveSpeed}");
-        yield return new WaitForSeconds(duration);
-        moveSpeed = baseMoveSpeed;
-        Debug.Log($"Speed boost terminou. Velocidade restaurada: {moveSpeed}");
     }
 
     void Update()
@@ -110,7 +93,6 @@ public class Movement : MonoBehaviour
             coyoteTimeCounter = 0f;
             jumpBufferCounter = 0f;
             jumpsRemaining--;
-            AudioManager.Instance.PlaySFX("Pulo");
         }
 
         // // One way platform drop down
@@ -119,7 +101,7 @@ public class Movement : MonoBehaviour
         //     if (Time.time - lastSPressTime < doubleSPressThreshold)
         //     {
         //         StartCoroutine(DisableCollision());
-        //         lastSPressTime = -1f; // reseta para evitar múltiplos triggers
+        //         lastSPressTime = -1f; //
         //     }
         //     else
         //     {
@@ -137,11 +119,10 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!cantMove)
-        {
-            rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
-            Flip();
-        }
+        if (cantMove) return; 
+
+        rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
+        Flip();
 
 
     }
@@ -162,12 +143,13 @@ public class Movement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
+        if (!GameManager.Instance.canPlayersMove) return;
         horizontalMovement = context.ReadValue<Vector2>().x;
-
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
+        if (!GameManager.Instance.canPlayersMove) return;
         if (context.started && jumpsRemaining > 0)
         {
             jumpBufferCounter = jumpBufferTime;
@@ -264,10 +246,11 @@ public class Movement : MonoBehaviour
             float yRotation = isFacingRight ? 0f : 180f;
 
 
-            transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            corpo.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+
+
         }
     }
-
 
     private void OnDrawGizmosSelected()
     {
@@ -293,16 +276,17 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private IEnumerator DisableCollision()
+    public IEnumerator DisableCollision()
     {
         BoxCollider2D platformCollider = currentPlatform.GetComponent<BoxCollider2D>();
         Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.5f);
         Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
     }
 
     public void Crouch(InputAction.CallbackContext context)
     {
+        if (!GameManager.Instance.canPlayersMove) return;
         if (context.started && currentPlatform != null)
         {
             if (Time.time - lastCrouchPressTime < doubleCrouchPressThreshold)
